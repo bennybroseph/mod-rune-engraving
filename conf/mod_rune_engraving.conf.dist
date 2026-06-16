@@ -1,0 +1,25 @@
+#
+# This file is part of the AzerothCore Project. See AUTHORS file for Copyright information
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+
+########################################
+# mod-rune-engraving configuration
+########################################
+#
+#    RuneEngraving.Enable
+#        Description: Master switch for the rune engraving engine. When disabled,
+#                     the catalog is not loaded, the engraver NPC is inert, and no
+#                     rune spells are applied on login. The module is a no-op.
+#        Default:     1 - (Enabled)
+#                     0 - (Disabled)
+#
+
+RuneEngraving.Enable = 1
