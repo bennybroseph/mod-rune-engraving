@@ -22,17 +22,24 @@ The engine works end-to-end:
   headlessly for testing.
 - **Grant/persist** — engraving grants the rune's spell (as a temporary spell),
   saved per-character; it's re-applied on login and removed when un-engraved.
-- **Unlocks** — runes are available by class by default, or can be **gated behind
-  quests**: a rune mapped in `rune_quest_unlock` is hidden until the character
-  completes the quest that unlocks it (per-rune, opt-in).
-- **SoD engraving rules** — slots **unlock by level** (per-slot config, SoD-phase
-  defaults), an optional **learn-Engraving prerequisite** can gate the system, and
-  the **same rune can't be engraved twice**.
+- **Unlocks** — runes are available by class by default, or can be **gated** so a
+  character must *earn* them (per-rune, opt-in): map a rune to a quest in
+  `rune_quest_unlock` (unlocked on quest completion), or to an item in
+  `rune_item_unlock` (unlocked by *using* an item bound to the engine's generic
+  `item_rune_unlock` script, which also consumes it). A gated rune is hidden at the
+  engraver until unlocked.
+- **SoD engraving rules** — slots **unlock by level** (per-slot config, defaulting
+  to the SoD phase-band starts), an optional **learn-Engraving prerequisite** can
+  gate the system, and the **same rune can't be engraved twice**.
+- **Debug reset** — an optional (`RuneEngraving.DebugMenu`) engraver gossip option
+  that reverts a character's gated-rune progress — relocks quest- and item-gated
+  runes, resets their quests, and hands back consumed unlock items — for re-testing.
 - **Robustness** — class-gated rune lists, self-healing on GUID reuse, and cleanup
   on character deletion.
 
 Scope so far: the UI is the **gossip NPC** (no client addon yet), and
-`mod-sod-mage` wires its **Regeneration** spell as the first proof rune.
+`mod-sod-mage` wires two proof runes — **Regeneration** (item-gated via a SoD item
+chain) and **Mass Regeneration** (quest-gated).
 
 ## Install
 
@@ -59,8 +66,12 @@ more. Talk to it to engrave, or test headlessly:
 
 ```
 .rune list                 # engraved runes for the selected character
+.rune slots                # each slot's unlock level + open/locked state
 .rune engrave <slot> <id>  # e.g. .rune engrave 4 7000001  (slot 4 = Chest)
 .rune clear <slot>
+.rune unlock <id>          # force-unlock a gated rune (testing)
+.rune lock <id>            # remove an unlock
+.rune unlocks              # list this character's unlocked runes
 .rune reload               # reload the catalog (admin)
 ```
 

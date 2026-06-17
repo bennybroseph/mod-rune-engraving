@@ -34,7 +34,9 @@ See [Architecture](architecture.md).
 | Piece | Where | Role |
 |-------|-------|------|
 | `rune_template` | `acore_world` | the rune catalog (content modules write here) |
-| `character_rune` | `acore_characters` | which rune is engraved per slot, per character |
+| `rune_quest_unlock` / `rune_item_unlock` | `acore_world` | optional gating: a rune is *earned* via a quest or by using an item (content writes here) |
+| `character_rune` / `character_rune_unlock` | `acore_characters` | per-character engraved slots + which gated runes are unlocked |
 | `RuneEngravingMgr` | C++ | loads the catalog, tracks state, grants/removes spells |
-| Rune Engraver NPC | entry `700000` | the gossip front-end for engraving |
-| `.rune` | GM command | headless engrave/list/clear/reload for testing |
+| Rune Engraver NPC | entry `700000` | the gossip front-end for engraving (+ an optional debug-reset option) |
+| `item_rune_unlock` | C++ ItemScript | generic "use this item to unlock its rune(s)" handler |
+| `.rune` | GM command | headless engrave/list/slots/clear/unlock/lock/reload for testing |

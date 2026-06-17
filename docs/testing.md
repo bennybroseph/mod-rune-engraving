@@ -21,10 +21,11 @@ exercise the production code, not a copy.
 ### What's *not* unit-tested (and why)
 
 The stateful, side-effecting paths — `Engrave`, `RemoveRune`, `ApplyAll`,
-`LoadPlayer`, the quest-unlock flow — depend on a live `Player` and the world /
-character databases. Those aren't constructable in the unit harness, so they're
-left to in-game verification ([Deploy & verify](deploy-and-verify.md)). Covering
-them would need a DB-backed integration harness, which this module doesn't set up.
+`LoadPlayer`, the quest- and item-unlock flows, and the debug reset — depend on a
+live `Player` and the world / character databases. Those aren't constructable in
+the unit harness, so they're left to in-game verification
+([Deploy & verify](deploy-and-verify.md)). Covering them would need a DB-backed
+integration harness, which this module doesn't set up.
 
 ## How it's wired
 

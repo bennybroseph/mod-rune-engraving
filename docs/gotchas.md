@@ -78,11 +78,15 @@ genuinely gone.
 
 ## A gated rune doesn't appear at the engraver — that's by design
 
-A rune mapped in `rune_quest_unlock` is hidden until the character unlocks it (by
-completing the quest). If a rune you expect is missing, check whether it's gated
-and whether the character has the unlock: `.rune unlocks` lists unlocks, and
-`.rune unlock <id>` force-grants one for testing. A rune with no quest mapping is
-never gated. Remember `.rune reload` after changing `rune_quest_unlock`.
+A rune mapped in `rune_quest_unlock` (unlocked by completing a quest) **or**
+`rune_item_unlock` (unlocked by using an item bound to the `item_rune_unlock`
+script) is hidden until the character unlocks it. If a rune you expect is missing,
+check whether it's gated and whether the character has the unlock: `.rune unlocks`
+lists unlocks, and `.rune unlock <id>` force-grants one for testing. A rune with no
+quest *or* item mapping is never gated. Remember `.rune reload` after changing
+either table. (To re-test from scratch, the engraver's debug-reset option — enabled
+by `RuneEngraving.DebugMenu` — relocks gated runes and hands back consumed unlock
+items.)
 
 ## Which spellbook tab a rune spell shows in is the *content* module's job
 
