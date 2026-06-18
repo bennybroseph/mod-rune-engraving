@@ -88,8 +88,11 @@ namespace
             for (auto const& [rune, locked] : sRuneEngravingMgr->GetSlotRuneStates(player, slot))
             {
                 std::string icon = rune->Icon.empty() ? "inv_misc_questionmark" : rune->Icon;
-                SendLine(player, Acore::StringFormat("RUNE~{}~{}~{}~{}~{}",
-                    uint32(slot), rune->RuneId, icon, locked ? 1 : 0, rune->Name));
+                // SpellId lets the addon show the real spell tooltip; Name stays
+                // last as it may contain '~'.
+                SendLine(player, Acore::StringFormat("RUNE~{}~{}~{}~{}~{}~{}",
+                    uint32(slot), rune->RuneId, icon, locked ? 1 : 0,
+                    rune->SpellId, rune->Name));
             }
         }
 
