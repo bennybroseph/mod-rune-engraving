@@ -26,6 +26,7 @@
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 class Player;
@@ -145,6 +146,11 @@ public:
     RuneTemplate const* GetRune(uint32 runeId) const;
     // Runes this player may engrave into `slot` (class- and slot-legal, unlocked).
     std::vector<RuneTemplate const*> GetRunesForSlot(Player* player, uint8 slot) const;
+    // Every class- and slot-legal rune for `slot`, each paired with its locked
+    // state (true == gated rune the character hasn't unlocked yet). The addon UI
+    // uses this to show locked runes greyed out; `GetRunesForSlot` is this list
+    // with the locked entries dropped.
+    std::vector<std::pair<RuneTemplate const*, bool>> GetSlotRuneStates(Player* player, uint8 slot) const;
 
     // Per-character state
     void LoadPlayer(Player* player);    // on login: read character_rune(+_unlock)

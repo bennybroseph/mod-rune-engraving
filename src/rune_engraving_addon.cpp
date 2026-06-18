@@ -85,11 +85,11 @@ namespace
                 sRuneEngravingMgr->SlotMinLevel(slot),
                 sRuneEngravingMgr->GetEngraved(player->GetGUID(), slot)));
 
-            for (RuneTemplate const* rune : sRuneEngravingMgr->GetRunesForSlot(player, slot))
+            for (auto const& [rune, locked] : sRuneEngravingMgr->GetSlotRuneStates(player, slot))
             {
                 std::string icon = rune->Icon.empty() ? "inv_misc_questionmark" : rune->Icon;
-                SendLine(player, Acore::StringFormat("RUNE~{}~{}~{}~{}",
-                    uint32(slot), rune->RuneId, icon, rune->Name));
+                SendLine(player, Acore::StringFormat("RUNE~{}~{}~{}~{}~{}",
+                    uint32(slot), rune->RuneId, icon, locked ? 1 : 0, rune->Name));
             }
         }
 

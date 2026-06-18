@@ -45,7 +45,7 @@ in the addon repo (`docs/protocol.md`) — keep both in sync.
 |---|---|
 | `BEGIN~<prereqMet 0\|1>~<level>` | learned-Engraving flag + character level |
 | `SLOT~<slot>~<name>~<minLevel>~<current>` | one per slot (`current` = engraved rune id, 0 = none) |
-| `RUNE~<slot>~<runeId>~<icon>~<name>` | one per engravable rune; `name` is last so it may contain `~` |
+| `RUNE~<slot>~<runeId>~<icon>~<locked 0\|1>~<name>` | one per class/slot-legal rune (locked + unlocked); `locked`=1 is a gated rune the character hasn't discovered (greyed in the panel); `name` is last so it may contain `~` |
 | `MSG~<text>` | optional feedback (engrave result / failure reason) |
 | `END` | push complete |
 

@@ -185,9 +185,9 @@ bool RuneEngravingMgr::IsGated(uint32 runeId) const
     return _gatedRunes.find(runeId) != _gatedRunes.end();
 }
 
-std::vector<RuneTemplate const*> RuneEngravingMgr::GetRunesForSlot(Player* player, uint8 slot) const
+std::vector<std::pair<RuneTemplate const*, bool>> RuneEngravingMgr::GetSlotRuneStates(Player* player, uint8 slot) const
 {
-    std::vector<RuneTemplate const*> out;
+    std::vector<std::pair<RuneTemplate const*, bool>> out;
     if (!player || !IsValidSlot(slot))
         return out;
 
@@ -202,17 +202,25 @@ std::vector<RuneTemplate const*> RuneEngravingMgr::GetRunesForSlot(Player* playe
                     _gatedRunes.find(runeId) != _gatedRunes.end());
     }
 
-    // Phase 2 (state lock): drop gated runes this character hasn't unlocked.
-    // Done as a separate lock so we never hold both at once (lock ordering).
+    // Phase 2 (state lock): resolve each gated rune's locked state for this
+    // character. Done as a separate lock so we never hold both at once.
     std::lock_guard<std::mutex> guard(_stateMutex);
     auto it = _unlocked.find(player->GetGUID());
     for (auto const& [rune, gated] : candidates)
     {
-        if (gated && (it == _unlocked.end()
-                || it->second.find(rune->RuneId) == it->second.end()))
-            continue;
-        out.push_back(rune);
+        bool locked = gated && (it == _unlocked.end()
+            || it->second.find(rune->RuneId) == it->second.end());
+        out.emplace_back(rune, locked);
     }
+    return out;
+}
+
+std::vector<RuneTemplate const*> RuneEngravingMgr::GetRunesForSlot(Player* player, uint8 slot) const
+{
+    std::vector<RuneTemplate const*> out;
+    for (auto const& [rune, locked] : GetSlotRuneStates(player, slot))
+        if (!locked)
+            out.push_back(rune);
     return out;
 }
 
