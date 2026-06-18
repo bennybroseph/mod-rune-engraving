@@ -36,4 +36,7 @@ tests/_lastrun.log
 *.exe
 *.out
 *.app
+
+# Claude Code local files (agent guidance + per-project local settings)
 CLAUDE.md
+.claude/
