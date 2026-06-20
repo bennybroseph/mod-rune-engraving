@@ -63,51 +63,10 @@ DELETE FROM `rune_contract`;
 INSERT INTO `rune_contract` (`version`) VALUES (2);
 
 -- =====================================================================
--- Rune Engraver NPC (entry 700000). Gossip-only, neutral, non-attackable.
--- DisplayID 3167 (Stormwind City Guard) is a verified, faction-neutral
--- placeholder appearance — swap it freely. ScriptName binds the C++ gossip.
+-- No engraver NPC is seeded here. The engine ships only the `npc_rune_engraver`
+-- gossip ScriptName (in C++); a content module supplies the actual creature and
+-- binds it via `creature_template.ScriptName = 'npc_rune_engraver'`. In this
+-- distribution that NPC is mod-sod-world's shared supply officer "Elaine Compton"
+-- (entry 213077). To use the engraver standalone, give any creature that
+-- ScriptName (e.g. via the world DB) or `.npc add` such a creature.
 -- =====================================================================
-DELETE FROM `creature`                WHERE `id1` = 700000;
-DELETE FROM `creature_template_model` WHERE `CreatureID` = 700000;
-DELETE FROM `creature_template`       WHERE `entry` = 700000;
-
-INSERT INTO `creature_template` (
-    `entry`,
-    `name`, `subname`,
-    `minlevel`, `maxlevel`,
-    `faction`, `npcflag`,
-    `speed_walk`, `speed_run`,
-    `unit_class`, `unit_flags`, `unit_flags2`,
-    `type`, `flags_extra`,
-    `ScriptName`
-) VALUES (
-    700000,
-    'Rune Engraver',
-    'Engraving',
-    80, 80,
-    190,   -- neutral (yellow nameplate)
-    1,     -- UNIT_NPC_FLAG_GOSSIP
-    1.0, 1.14286,
-    1,     -- warrior (simplest stats)
-    2,     -- NON_ATTACKABLE
-    0,
-    7,     -- humanoid
-    2,     -- CIVILIAN (no aggro radius)
-    'npc_rune_engraver'
-);
-
-INSERT INTO `creature_template_model` (
-    `CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`
-) VALUES (
-    700000, 0, 3167, 1.0, 1.0
-);
-
--- One convenience spawn in Stormwind, Trade District (verified on-surface
--- coordinate from `.gps`: Z matches FloorZ). guid 8800001 sits in a high band
--- to avoid collisions. Use `.npc add 700000` to place additional engravers.
-INSERT INTO `creature` (
-    `guid`, `id1`, `map`, `spawnMask`, `phaseMask`,
-    `position_x`, `position_y`, `position_z`, `orientation`,
-    `spawntimesecs`
-) VALUES
-    (8800001, 700000, 0, 1, 1, -8825.063, 649.7763, 94.57176, 4.7048225, 180);
