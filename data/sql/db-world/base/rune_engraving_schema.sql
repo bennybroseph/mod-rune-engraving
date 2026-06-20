@@ -59,6 +59,10 @@ CREATE TABLE IF NOT EXISTS `rune_contract` (
     PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Sanctioned singleton reset (the one allowed committed DELETE): `version` is the
+-- PK, so a changing value can't be UPSERTed (a new version would add a 2nd row).
+-- The engine owns this whole table outright, so wiping + re-seeding it destroys
+-- nothing it doesn't own. Keep it to exactly one row.
 DELETE FROM `rune_contract`;
 INSERT INTO `rune_contract` (`version`) VALUES (2);
 
